@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -23,6 +24,9 @@ public class NewTeleOp extends LinearOpMode{
     //arm
     private DcMotor armMotor;
 
+    private CRServo rightIntakeServo;
+    private CRServo leftIntakeServo;
+
 
     @Override
     public void runOpMode () throws InterruptedException {
@@ -33,13 +37,25 @@ public class NewTeleOp extends LinearOpMode{
 
         armMotor = hardwareMap.dcMotor.get("armMotor");
 
+        rightIntakeServo = hardwareMap.crservo.get("rightIntake");
+        leftIntakeServo = hardwareMap.crservo.get("leftIntake");
+
+
         //directions
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        //arm motor(s)
         armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        rightIntakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftIntakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+
+
+
 
 
         //Drive Variables
@@ -52,7 +68,8 @@ public class NewTeleOp extends LinearOpMode{
         double front_right_speed;
         double rear_right_speed;
 
-        double arm_speed = 0.75;
+        //arm motor speed
+        double arm_speed = 1;
 
         waitForStart();
         while (opModeIsActive()){
@@ -82,6 +99,24 @@ public class NewTeleOp extends LinearOpMode{
             } else{
                 armMotor.setPower(0);
             }
+            ////////////////////////////
+            if (gamepad1.y){
+                rightIntakeServo.setPower(1);
+                leftIntakeServo.setPower(1);
+
+            }
+            ////////////////////////////////
+            else if (gamepad1.x) {
+                rightIntakeServo.setPower(-1);
+                leftIntakeServo.setPower(-1);
+            }
+            ////////////////////////////////////
+            else{
+                rightIntakeServo.setPower(0);
+                leftIntakeServo.setPower(0);
+            }
+
+
             idle();
         }
     }
